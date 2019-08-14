@@ -129,3 +129,98 @@ console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
 // * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.
 // * Give the Hero and Villains different methods that could be used to remove health points from objects which could result in destruction if health gets to 0 or drops below 0;
 // * Create two new objects, one a villain and one a hero and fight it out with methods!
+function Villain(attributes) {
+  Humanoid.call(this, attributes);
+  this.attackPower = attributes.attackPower;
+};
+
+Villain.prototype = Object.create(Humanoid.prototype);
+
+Villain.prototype.attack = function(object) {
+  if (object.healthPoints > 0) {
+    console.log(`${this.name} attacks ${object.name} with ${this.weapons} for ${this.attackPower} damage.`);
+    console.log(object.takeDamage());
+    object.healthPoints -= this.attackPower;
+    console.log(`${object.name}'s HP remaining: ${object.healthPoints}`);
+    if (object.healthPoints <= 0) {
+      console.log(object.destroy());
+    }
+  }
+};
+
+function Hero(attributes) {
+  Humanoid.call(this, attributes);
+  this.attackPower = attributes.attackPower;
+  this.healPower = attributes.healPower;
+  this.spells = attributes.spells;
+};
+
+Hero.prototype = Object.create(Humanoid.prototype);
+
+Hero.prototype.attack = function(object) {
+  if (object.healthPoints > 0) {
+    console.log(`${this.name} attacks ${object.name} with ${this.weapons} for ${this.attackPower} damage.`);
+    console.log(object.takeDamage());
+    object.healthPoints -= this.attackPower;
+    console.log(`${object.name}'s HP remaining: ${object.healthPoints}`);
+    if (object.healthPoints <= 0) {
+      console.log(object.destroy());
+    }
+  }
+};
+
+Hero.prototype.holyLight = function(object) {
+  if (this.healthPoints > 0) {
+    console.log(`${this.name} casts ${this.spells[0]} on ${object.name} restoring ${this.healPower} HP.`);
+    object.healthPoints += this.healPower;
+    console.log(`${object.name}'s HP remaining: ${object.healthPoints}`);
+  }
+};
+
+const theLichKing = new Villain({
+  createdAt: new Date(),
+  dimensions: {
+    length: 3,
+    width: 3,
+    height: 8
+  },
+  healthPoints: 30,
+  attackPower: 5,
+  name: "The Lich King",
+  team: "The Scourge",
+  weapons: ["Frostmourne"],
+  language: "Common Tongue"
+});
+
+const tirionFordring = new Hero({
+  createdAt: new Date(),
+  dimensions: {
+    length: 3,
+    width: 4,
+    height: 8
+  },
+  healthPoints: 30,
+  attackPower: 5,
+  healPower: 3,
+  spells: ['Holy Light', "Flash of Light"],
+  name: "Tirion Fordring",
+  team: "Argent Crusade",
+  weapons: ["Ashbringer"],
+  language: "Common Tongue"
+});
+
+tirionFordring.attack(theLichKing);
+theLichKing.attack(tirionFordring);
+tirionFordring.attack(theLichKing);
+theLichKing.attack(tirionFordring);
+tirionFordring.holyLight(tirionFordring);
+theLichKing.attack(tirionFordring);
+tirionFordring.holyLight(tirionFordring);
+theLichKing.attack(tirionFordring);
+tirionFordring.attack(theLichKing);
+theLichKing.attack(tirionFordring);
+tirionFordring.attack(theLichKing);
+theLichKing.attack(tirionFordring);
+tirionFordring.attack(theLichKing);
+theLichKing.attack(tirionFordring);
+tirionFordring.attack(theLichKing);
